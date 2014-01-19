@@ -5,21 +5,43 @@ from flask import render_template, Blueprint, Markup
 
 class Map(object):
     def __init__(self, identifier, lat, lng,
-                 zoom=13, maptype="ROADMAP", markers=None,
+                 zoom=13, maptype="ROADMAP", drawingtype='point', markers=None,
                  varname='map',
                  style="height:300px;width:300px;margin:0;",
-                 cls="map"):
+                 cls="map", strokecolor='#FF0000', strokeopacity=0.8, strokeweight=2, fillcolor='#FF0000', fillopacity=0.35):
         self.cls = cls
         self.style = style
         self.varname = varname
         self.center = (lat, lng)
         self.zoom = zoom
         self.maptype = maptype
+        self.drawingtype = drawingtype
+        self.strokecolor = strokecolor
+        self.strokeopacity = strokeopacity
+        self.strokeweight = strokeweight
+        self.fillcolor = fillcolor
+        self.fillopacity = fillopacity
         self.markers = markers or []
         self.identifier = identifier
 
-    def add_marker(self, lat, lng):
-        self.markers.append((lat, lng))
+    def __init__(self, point=None, zoom=13, maptype="SATELITE", varname="map",style="height:300px;width:300px;margin:0;", cls="map", markers=None, polygons=None):
+        self.point = point,
+        self.zoom = zoom,
+        self.maptype = maptype,
+        self.varname = varname,
+        self.style = style,
+        self.cls = cls,
+        self.markers = markers,
+        self.polygons = polygons
+
+    def add_marker(self, identifier, latitude, longitude):
+        self.markers.append(new Marker(identifier,new Point(latitude,longitude))
+
+    def add_polygon(self, identifier, strokecolor, strokeopacity, strokeweight, fillcolor, fillopacity, markers): 
+        self.polygons.append(new Polygon(identifier,stokecolor,strokeopacity,strokeweight,fillcolor,fillopacity,markers))
+
+    #def add_marker(self, lat, lng):
+    #    self.markers.append((lat, lng))
 
     def render(self, *args, **kwargs):
         return render_template(*args, **kwargs)
@@ -71,3 +93,23 @@ class GoogleMaps(object):
                            template_folder="templates")
         app.register_blueprint(module)
         return module
+
+class Marker(object):
+    def __init__(self, longitude, latitude, isDMS):
+        self.longitude = longitude,
+        self.latitude = latitude
+
+class Point(object):
+    def __init__(self, identifier, marker):
+        self.identifier = identifier,
+        self.marker = marker
+
+class Polygon(object):
+    def __init__(self, identifier, strokecolor, strokeopacity, strokeweight, fillcolor, fillopacity, markers):
+        self.strokecolor = strokecolor,
+        self.strokeopacity = stokeopacity,
+        self.stokeweight = strokeweight,
+        self.fillcolor = fillcolor,
+        self.fillopacity = fillopacity,
+        self.markers = self.markers
+
