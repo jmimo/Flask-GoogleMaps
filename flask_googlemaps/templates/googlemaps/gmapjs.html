@@ -13,13 +13,32 @@
             mapTypeId: google.maps.MapTypeId.{{gmap.maptype}}
         });
 
-        {% if gmap.drawingtype == 'point' %}
-          {% for marker in gmap.markers %}
-              var marker_{{loop.counter}} = new google.maps.Marker({
-                  position: new google.maps.LatLng({{marker.0}}, {{marker.1}}),
-                  map: {{gmap.varname}}
-              });
+        {% if gmap.points not Empty %}
+          {% for point in gmap.points %}
+            var marker_{{loop.counter}} = new google.maps.Marker({
+            position: new google.maps.LatLng({{point.marker.latitude}},{{point.marker.longitude}}),
+            map: {{gmap.varname}})
           {% endfor %}
+        {% endif %}
+
+        {% if gmap.polygons not Empty %}
+          {% for polygon in gmap.polygons %}
+            var polygon{{loop.counter}}
+            var polygonCoords{{loop.counter}} = [
+              {% for marker in polygon.markers %}
+                new google.maps.LatLng({{marker.latitude}},{{marker.longitude}}){%if not loop.last %},{% endif %}
+              {% endfor %}
+            ]
+              polygon{{loop.counter}} = new google.maps.Polygon({
+                paths: polygonCoords{{loop.counter}},
+                strokeColor: polygon.strokecolor,
+                strokeOpacity: polygon.strokeopacity,
+                strokeWeight: polygon.strokeweight,
+                fillcolor: 'a
+              })
+          {% endfor %}
+        {% endif %}
+
         {% elif gmap.drawingtype == 'polygon' %}
           var polygon
 
