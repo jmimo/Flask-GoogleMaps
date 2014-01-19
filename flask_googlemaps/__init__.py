@@ -4,25 +4,6 @@ from flask import render_template, Blueprint, Markup
 
 
 class Map(object):
-    def __init__(self, identifier, lat, lng,
-                 zoom=13, maptype="ROADMAP", drawingtype='point', markers=None,
-                 varname='map',
-                 style="height:300px;width:300px;margin:0;",
-                 cls="map", strokecolor='#FF0000', strokeopacity=0.8, strokeweight=2, fillcolor='#FF0000', fillopacity=0.35):
-        self.cls = cls
-        self.style = style
-        self.varname = varname
-        self.center = (lat, lng)
-        self.zoom = zoom
-        self.maptype = maptype
-        self.drawingtype = drawingtype
-        self.strokecolor = strokecolor
-        self.strokeopacity = strokeopacity
-        self.strokeweight = strokeweight
-        self.fillcolor = fillcolor
-        self.fillopacity = fillopacity
-        self.markers = markers or []
-        self.identifier = identifier
 
     def __init__(self, point=None, zoom=13, maptype="SATELITE", varname="map",style="height:300px;width:300px;margin:0;", cls="map", markers=None, polygons=None):
         self.point = point,
@@ -39,9 +20,6 @@ class Map(object):
 
     def add_polygon(self, identifier, strokecolor, strokeopacity, strokeweight, fillcolor, fillopacity, markers): 
         self.polygons.append(new Polygon(identifier,stokecolor,strokeopacity,strokeweight,fillcolor,fillopacity,markers))
-
-    #def add_marker(self, lat, lng):
-    #    self.markers.append((lat, lng))
 
     def render(self, *args, **kwargs):
         return render_template(*args, **kwargs)
@@ -95,7 +73,7 @@ class GoogleMaps(object):
         return module
 
 class Marker(object):
-    def __init__(self, longitude, latitude, isDMS):
+    def __init__(self, longitude, latitude, isDMS=True):
         self.longitude = longitude,
         self.latitude = latitude
 
@@ -112,4 +90,8 @@ class Polygon(object):
         self.fillcolor = fillcolor,
         self.fillopacity = fillopacity,
         self.markers = self.markers
+
+    def add_marker(longitude, latitude):
+        markers.append(new Marker(longitude, latitude))
+
 
