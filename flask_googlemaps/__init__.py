@@ -5,8 +5,8 @@ from flask import render_template, Blueprint, Markup
 
 class Map(object):
 
-    def __init__(self, point=None, zoom=13, maptype="SATELITE", varname="map",style="height:300px;width:300px;margin:0;", cls="map", markers=None, polygons=None):
-        self.point = point,
+    def __init__(self, center=None, zoom=13, maptype='SATELLITE', varname='map' ,style='height:300px;width:300px;margin:0;', cls='map', markers=[], polygons=[]):
+        self.center = center,
         self.zoom = zoom,
         self.maptype = maptype,
         self.varname = varname,
@@ -15,11 +15,11 @@ class Map(object):
         self.markers = markers,
         self.polygons = polygons
 
-    def add_marker(self, identifier, latitude, longitude):
-        self.markers.append(new Marker(identifier,new Point(latitude,longitude))
+    def add_marker(self, latitude, longitude):
+        self.markers.append(Marker(latitude,longitude))
 
-    def add_polygon(self, identifier, strokecolor, strokeopacity, strokeweight, fillcolor, fillopacity, markers): 
-        self.polygons.append(new Polygon(identifier,stokecolor,strokeopacity,strokeweight,fillcolor,fillopacity,markers))
+    def add_polygon(self, polygon):
+        self.polygons.append(polygon)
 
     def render(self, *args, **kwargs):
         return render_template(*args, **kwargs)
@@ -73,25 +73,20 @@ class GoogleMaps(object):
         return module
 
 class Marker(object):
-    def __init__(self, longitude, latitude, isDMS=True):
-        self.longitude = longitude,
-        self.latitude = latitude
-
-class Point(object):
-    def __init__(self, identifier, marker):
-        self.identifier = identifier,
-        self.marker = marker
+    def __init__(self, latitude, longitude):
+        self.latitude = latitude,
+        self.longitude = longitude
 
 class Polygon(object):
-    def __init__(self, identifier, strokecolor, strokeopacity, strokeweight, fillcolor, fillopacity, markers):
+    def __init__(self, strokecolor='#FF0000', strokeopacity=0.8, strokeweight=2, fillcolor='#FF0000', fillopacity=0.35, markers=[]):
         self.strokecolor = strokecolor,
-        self.strokeopacity = stokeopacity,
-        self.stokeweight = strokeweight,
+        self.strokeopacity = strokeopacity,
+        self.strokeweight = strokeweight,
         self.fillcolor = fillcolor,
         self.fillopacity = fillopacity,
-        self.markers = self.markers
+        self.markers = markers
 
-    def add_marker(longitude, latitude):
-        markers.append(new Marker(longitude, latitude))
+    def add_marker(self, latitude, longitude):
+        self.markers.append(Marker(latitude, longitude))
 
 
