@@ -5,15 +5,15 @@ from flask import render_template, Blueprint, Markup
 
 class Map(object):
 
-    def __init__(self, center=None, zoom=13, maptype='SATELLITE', varname='map' ,style='height:300px;width:300px;margin:0;', cls='map', markers=[], polygons=[]):
-        self.center = center,
-        self.zoom = zoom,
-        self.maptype = maptype,
-        self.varname = varname,
-        self.style = style,
-        self.cls = cls,
-        self.markers = markers,
-        self.polygons = polygons
+    def __init__(self, center, markers=None, polygons=None, zoom=13, maptype="SATELLITE", varname='map' ,style="height:300px;width:300px;margin:0;", cls="map"):
+        self.center = center or Marker('47.12505','8.61546')
+        self.markers = markers or []
+        self.polygons = polygons or []
+        self.zoom = zoom
+        self.maptype = maptype
+        self.varname = varname
+        self.style = style
+        self.cls = cls
 
     def add_marker(self, latitude, longitude):
         self.markers.append(Marker(latitude,longitude))
@@ -74,17 +74,17 @@ class GoogleMaps(object):
 
 class Marker(object):
     def __init__(self, latitude, longitude):
-        self.latitude = latitude,
+        self.latitude = latitude
         self.longitude = longitude
 
 class Polygon(object):
-    def __init__(self, strokecolor='#FF0000', strokeopacity=0.8, strokeweight=2, fillcolor='#FF0000', fillopacity=0.35, markers=[]):
-        self.strokecolor = strokecolor,
-        self.strokeopacity = strokeopacity,
-        self.strokeweight = strokeweight,
-        self.fillcolor = fillcolor,
-        self.fillopacity = fillopacity,
-        self.markers = markers
+    def __init__(self, markers=None, strokecolor="#FF0000", strokeopacity=0.8, strokeweight=2, fillcolor="#FF0000", fillopacity=0.35):
+        self.markers = markers or []
+        self.strokecolor = strokecolor
+        self.strokeopacity = strokeopacity
+        self.strokeweight = strokeweight
+        self.fillcolor = fillcolor
+        self.fillopacity = fillopacity
 
     def add_marker(self, latitude, longitude):
         self.markers.append(Marker(latitude, longitude))

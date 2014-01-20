@@ -1,46 +1,46 @@
 <script src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
 
 <style type="text/css">
-      #test-map { {{gmap.style}} }
+      #test-map { {{ gmap.style }} }
 </style>
 
 <script type="text/javascript">
-    function initialize_{{gmap.varname}}() {
-        var {{gmap.varname}} = new google.maps.Map(
+    function initialize_{{  gmap.varname  }}() {
+        var {{  gmap.varname  }} = new google.maps.Map(
         document.getElementById('test-map'), {
-            center: new google.maps.LatLng({{gmap.center.latitude}}, {{gmap.center.longitude}}),
-            zoom: {{gmap.zoom}},
-            mapTypeId: google.maps.MapTypeId.{{gmap.maptype}}
+            center: new google.maps.LatLng({{ gmap.center.latitude }}, {{ gmap.center.longitude }}),
+            zoom: {{ gmap.zoom }},
+            mapTypeId: google.maps.MapTypeId.{{ gmap.maptype }}
         });
 
         {% if gmap.markers %}
           {% for marker in gmap.markers %}
-            var marker_{{loop.counter}} = new google.maps.Marker({
-            position: new google.maps.LatLng({{marker.latitude}},{{marker.longitude}}),
-            map: {{gmap.varname}})
+            var marker_{{ loop.counter }} = new google.maps.Marker({
+            position: new google.maps.LatLng({{ marker.latitude }},{{ marker.longitude }}),
+            map: {{ gmap.varname }})
           {% endfor %}
         {% endif %}
 
         {% if gmap.polygons %}
           {% for polygon in gmap.polygons %}
-            var polygon{{loop.counter}}
-            var polygonCoords{{loop.counter}} = [
+            var polygon{{ loop.counter }}
+            var polygonCoords{{ loop.counter }} = [
               {% for marker in polygon.markers %}
-                new google.maps.LatLng({{marker.latitude}},{{marker.longitude}}){%if not loop.last %},{% endif %}
+                new google.maps.LatLng({{ marker.latitude }},{{ marker.longitude }}){%if not loop.last %},{% endif %}
               {% endfor %}
             ]
-              polygon{{loop.counter}} = new google.maps.Polygon({
-                paths: polygonCoords{{loop.counter}},
-                strokeColor: '{{polygon.strokecolor}}',
-                strokeOpacity: {{polygon.strokeopacity}},
-                strokeWeight: {{polygon.strokeweight}},
-                fillcolor: '{{polygon.fillcolor}}',
-                fillopacity: {{polygon.fillopacity}}
+              polygon{{ loop.counter }} = new google.maps.Polygon({
+                paths: polygonCoords{{ loop.counter }},
+                strokeColor: '{{ polygon.strokecolor }}',
+                strokeOpacity: {{ polygon.strokeopacity }},
+                strokeWeight: {{ polygon.strokeweight }},
+                fillcolor: '{{ polygon.fillcolor }}',
+                fillopacity: {{ polygon.fillopacity }}
               })
-              polygon{{loop.counter}}.setMap({{gmap.varname}})
+              polygon{{ loop.counter }}.setMap({{ gmap.varname }})
           {% endfor %}
         {% endif %}
 
     }
-    google.maps.event.addDomListener(window, 'load', initialize_{{gmap.varname}});
+    google.maps.event.addDomListener(window, 'load', initialize_{{ gmap.varname }});
 </script>
