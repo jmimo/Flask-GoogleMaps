@@ -5,10 +5,12 @@ from flask import render_template, Blueprint, Markup
 
 class Map(object):
 
-    def __init__(self, center, markers=None, polygons=None, zoom=13, maptype="SATELLITE", varname='map' ,style="height:300px;width:300px;margin:0;", cls="map"):
+    def __init__(self, center, markers=None, polygons=None, circles=None, lines=None, zoom=13, maptype="SATELLITE", varname='map' ,style="height:300px;width:300px;margin:0;", cls="map"):
         self.center = center or Marker('47.12505','8.61546')
         self.markers = markers or []
         self.polygons = polygons or []
+        self.circles = circles or []
+        self.lines = lines or []
         self.zoom = zoom
         self.maptype = maptype
         self.varname = varname
@@ -20,6 +22,12 @@ class Map(object):
 
     def add_polygon(self, polygon):
         self.polygons.append(polygon)
+
+    def add_circle(self, circle):
+        self.circles.append(circle)
+
+    def add_line(self, polyline):
+        self.lines.append(polyline)
 
     def render(self, *args, **kwargs):
         return render_template(*args, **kwargs)
@@ -89,4 +97,16 @@ class Polygon(object):
     def add_marker(self, latitude, longitude):
         self.markers.append(Marker(latitude, longitude))
 
+class Circle(object):
+    def __init__(self, center, radius, strokecolor="#FF0000", strokeopacity=0.8, strokeweight=2, fillcolor="#FF0000", fillopacity=0.35):
+        self.center = center
+        self.radius = radius
+        self.strokecolor = strokecolor
+        self.strokeopacity = strokeopacity
+        self.strokeweight = strokeweight
+        self.fillcolor = fillcolor
+        self.fillopacity = fillopacity
 
+class Polyline(object):
+    def __init__(self, markers=None):
+        self.markers = markers or []
